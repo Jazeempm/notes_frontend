@@ -30,4 +30,3 @@ python manage.py runserver
 ```
 
 
-## Structure
