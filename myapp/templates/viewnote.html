@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <!--        <link rel="stylesheet" type="text/css" href="/static/style.css">-->
+
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        .img-wrap {
+    position: relative;
+
+}
+.img-wrap .close {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 100;
+
+}
+
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="">Notes App</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+        <li><a><span class="glyphicon glyphicon-user"></span> {{request.session.token.username}}</a></li>
+      <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+    <h1 class="form-heading">note</h1>
+    <p align="right">
+        <button type="submit" style="display" onclick="edit()" class="btn btn-primary">Edit</button>
+        <a style="display" href="{% url 'deletenote' data.id %}" class="btn btn-danger">Delete</a>
+
+    </p>
+    <div class="login-form">
+        <div class="main-div">
+
+
+            <form action="{% url 'updatenote' data.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <div class="form-group">
+                    <input type="text" class="form-control" value="{{data.title}}" name="title" placeholder="Title"
+                           required disabled>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" style="height:300px" name="content" placeholder="Content" required
+                              disabled>{{data.content}}</textarea>
+                </div>
+                <button type="submit" id="save" style="display:none" class="btn btn-primary">Save</button>
+            </form>
+
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            {% for i in data.notesimage_set %}
+            <!--        <p>{{i.image}}</p>-->
+            <div id="img{{i.id}}" class="col-sm-3">
+                <div class="img-wrap">
+                    <button onclick="delete_image({{i.id}})" class="close">&times;</button>
+                    <img height="200" width="250" src="{{i.image}}">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group">
+            <label>Choose Image<br></label>
+            <form action="{% url 'uploadimage' data.id %}" enctype="multipart/form-data" method="post">{% csrf_token %}
+                <input type="file" class="form-control" name="notesimage" placeholder="Title" multiple required>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script>
+
+    async function delete_image(id) {
+
+      const response = await fetch('http://localhost:9000/delete_image/'+id+'/', {
+        method: 'GET',
+      });
+      if(response.status == 204){
+      var img=document.getElementById("img"+id);
+      img.remove();
+      }
+     }
+
+    function edit(){
+        var btn=document.getElementById("save");
+        var elements=document.getElementsByClassName("form-control");
+        for(i=0;i<elements.length;i++){
+            elements[i].disabled=false;
+        }
+        btn.style.display="block";
+    }
+
+
+
+</script>
+
+
+</body>
+</html>

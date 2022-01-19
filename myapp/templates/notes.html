@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/style2.css">
+
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="">Notes App</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+        <li><a><span class="glyphicon glyphicon-user"></span> {{request.session.token.username}}</a></li>
+      <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+    <a href="{% url 'addnoteform' %}" class="btn btn-primary btn-block">Add Note</a>
+
+    <div class="row">
+    	<ul class="notes">
+            {% for note in data %}
+
+            <li>
+                <a href="{% url 'viewnote' note.id %}">
+                <div class="{% cycle 'lazur-bg' 'red-bg' 'yellow-bg' %}">
+                    <h4 style="color:blue">{{note.title}}</h4>
+                    <p>{{note.content | truncatechars:40}}</p>
+                    <p style="color:grey">{{ note.created}}</p>
+                </div>
+                </a>
+            </li>
+
+            {% endfor %}
+
+		</ul>
+	</div>
+</div>
+</body>
+</html>
