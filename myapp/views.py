@@ -5,6 +5,8 @@ from django.shortcuts import redirect,render
 from django.views.generic import FormView,View,DeleteView
 from .forms import LoginForm,RegisterForm
 import requests
+from django.contrib import messages
+
 # Create your views here.
 
 class LoginView(View):
@@ -24,6 +26,7 @@ class LoginView(View):
                 data = result.json()
                 self.request.session['token'] = data
                 return redirect('/')
+        messages.error(request, 'Incorrect Username or Password')
         return redirect("/login")
 
 

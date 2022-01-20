@@ -29,6 +29,11 @@
             <div class="panel">
                 <h2>Admin Login</h2>
                 <p>Please enter your email and password</p>
+		{% if messages %}
+		{% for message in messages %}
+				<p style="color:red">{{message}}</p>
+		{% endfor %}
+		{% endif %}
             </div>
             <form action="" method="post" >{% csrf_token %}
                 <div class="form-group">
