@@ -106,6 +106,7 @@ def delete_note(request,pk):
         result = requests.delete(url, headers=header)
         print(result.status_code)
         if result.status_code == 204:
+            messages.success(request, 'Note Deleted...')
             return redirect('/')
         else:
             refresh(request)
@@ -129,6 +130,7 @@ class NoteApiCallView(View):
             result = requests.post(url,data=d,files=request.FILES, headers=header,)
 
             if result.status_code == 201:
+                messages.success(request, 'Note Added...')
                 return redirect("/")
             else:
                 refresh(request)
@@ -144,6 +146,7 @@ def notes_list(request):
         }
         result = requests.get(url, headers=header)
         if result.status_code == 200:
+            
             return render(request,"notes.html",{"data":result.json()})
         else:
             refresh(request)
