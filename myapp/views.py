@@ -24,39 +24,10 @@ class LoginView(View):
                 data = result.json()
                 self.request.session['token'] = data
                 return redirect('/')
-        else:
-            return redirect("/login")
+        return redirect("/login")
 
 
 
-# class RegisterView(View):
-#     def get(self,request):
-#         pass
-#     def post(self,request):
-#         pass
-
-# class LoginView(View):
-#     # template_name = 'login.html'
-#     form_class = LoginForm
-#     success_url = '/'
-#
-#     def get_template_names(self):
-#         if self.request.session.get('token', False):
-#             return redirect("/")
-#         return 'login.html'
-#
-#     def form_valid(self, form):
-#         url = "http://localhost:9000/login/"
-#         header = {
-#             "Content-Type": "application/json",
-#         }
-#         result = requests.post(url, data=json.dumps(form.cleaned_data), headers=header)
-#         if result.status_code == 200:
-#             data=result.json()
-#             self.request.session['token']=data
-#             return super(LoginView, self).form_valid(form)
-#         else:
-#             return redirect("/login")
 
 class RegisterView(FormView):
     template_name = 'register.html'
